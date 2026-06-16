@@ -1,0 +1,22 @@
+%%{init: {'theme': 'base', 'themeVariables': {'actorBkg': '#1D4ED8', 'actorBorder': '#1E3A8A', 'actorTextColor': '#FFFFFF', 'actorLineColor': '#93C5FD', 'noteBkgColor': '#FEF3C7', 'noteTextColor': '#92400E', 'noteBorderColor': '#F59E0B', 'signalColor': '#1E293B', 'signalTextColor': '#1E293B', 'labelBoxBkgColor': '#7C3AED', 'labelBoxBorderColor': '#5B21B6', 'labelTextColor': '#FFFFFF'}}}%%
+sequenceDiagram
+    autonumber
+    participant HIS_A
+    participant NodoDominio as Nodo A
+    box rgb(237,233,254) PINS
+        participant FederadorNacion as Federador
+        participant IndiceNacion as Indice Documentos
+    end
+    participant NodoDominio2 as Nodo B
+    Note over HIS_A,FederadorNacion: 1. Busqueda y resolución de Identidad
+    HIS_A->>NodoDominio: ITI67: Solicita los IPS asociados al paciente por su identificador local <br /> [GET /DocumentReference?patient.identifier=<ID_Local>]
+    NodoDominio->>FederadorNacion: Busca el paciente por su identificador local <br /> [GET /Patient?identifier=<ID_Local>]
+    FederadorNacion-->>NodoDominio: 200 OK (Patient Searchset)
+    Note over NodoDominio,IndiceNacion: 2. Busqueda de Metadatos
+    Note right of NodoDominio: El Nodo obtiene el identificador nacional del paciente 
+    NodoDominio->>IndiceNacion: Busca los IPS asociados al paciente por su identificador nacional <br /> [GET /DocumentReference?patient=<ID_Nacional>]
+    IndiceNacion-->>NodoDominio: 200 OK (DocumentReference Searchset)
+    NodoDominio-->>HIS_A: 200 OK (DocumentReference Searchset)
+    Note over HIS_A,NodoDominio2: 3. Descarga del documento (ITI-68)
+    HIS_A->>NodoDominio2:  Obtiene el documento IPS <br /> [GET <URL_IPSBundle>]
+    NodoDominio2-->>HIS_A: 200 OK (IPS Bundle)

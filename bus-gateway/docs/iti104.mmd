@@ -1,0 +1,13 @@
+%%{init: {'theme': 'base', 'themeVariables': {'actorBkg': '#1D4ED8', 'actorBorder': '#1E3A8A', 'actorTextColor': '#FFFFFF', 'actorLineColor': '#93C5FD', 'noteBkgColor': '#FEF3C7', 'noteTextColor': '#92400E', 'noteBorderColor': '#F59E0B', 'signalColor': '#1E293B', 'signalTextColor': '#1E293B', 'labelBoxBkgColor': '#7C3AED', 'labelBoxBorderColor': '#5B21B6', 'labelTextColor': '#FFFFFF'}}}%%
+sequenceDiagram
+    autonumber
+    participant HIS_A
+    participant NodoDominio as Nodo 
+    box rgb(237,233,254) PINS
+        participant FederadorNacion as Federador
+    end
+    Note over HIS_A,FederadorNacion: Gestion de Identidad
+    HIS_A->>NodoDominio: ITI-104: Federa un nuevo paciente en el MPI <br /> [POST /Patient]
+    NodoDominio->>FederadorNacion: Federa un nuevo  paciente en el Federador <br /> [POST /Patient]
+    FederadorNacion-->>NodoDominio: 201 (Created) 
+    NodoDominio-->>HIS_A: 200 OK (Patient)

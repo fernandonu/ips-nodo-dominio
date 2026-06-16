@@ -1,0 +1,20 @@
+%%{init: {'theme': 'base', 'themeVariables': {'actorBkg': '#1D4ED8', 'actorBorder': '#1E3A8A', 'actorTextColor': '#FFFFFF', 'actorLineColor': '#93C5FD', 'noteBkgColor': '#FEF3C7', 'noteTextColor': '#92400E', 'noteBorderColor': '#F59E0B', 'signalColor': '#1E293B', 'signalTextColor': '#1E293B', 'labelBoxBkgColor': '#7C3AED', 'labelBoxBorderColor': '#5B21B6', 'labelTextColor': '#FFFFFF'}}}%%
+sequenceDiagram
+    autonumber
+    participant HIS_A
+    participant NodoDominio as Nodo (Emisor)
+    box rgb(237,233,254) PINS
+        participant FederadorNacion as Federador
+        participant IndiceNacion as Indice Documentos
+    end
+    Note over HIS_A,IndiceNacion: 1. Recepcion Local del Documento Bundle (POST /Bundle)
+    HIS_A->>NodoDominio: ITI65: Provee un nuevo documento IPS (bundle)
+    Note right of NodoDominio: El Nodo almacena físicamente el documento y extrae la metadata.
+    Note over NodoDominio,FederadorNacion: 2. Resolución de Identidad
+    NodoDominio->>FederadorNacion: Busca al paciente por el su identificador local [GET /Patient?identifier=<ID_Local>]
+    FederadorNacion-->>NodoDominio: 200 OK (Patient Searchset)
+    Note over NodoDominio,IndiceNacion: 3. Enrutamiento de la Petición
+    Note right of NodoDominio: El Nodo genera la referencia al IPS y la asocia al identificador nacional del paciente.
+    NodoDominio->>IndiceNacion: Guarda la referencia al IPS en el índice de documentos [POST /DocumentReference]
+    IndiceNacion-->>NodoDominio: 201 (Created)
+    NodoDominio-->>HIS_A: 200 OK (DocumentReference)

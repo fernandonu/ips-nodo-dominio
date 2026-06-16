@@ -1,0 +1,43 @@
+@startuml
+
+skinparam backgroundColor #FFFFFF
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Diagrama de Contenedores para la Conectatón Argentina
+
+System_Ext(historiaClinica, 'HCI', 'Registtra la historia clinica y genera resumenes de historia clinica (IPS)')
+
+
+System_Boundary(nodo, 'Nodo'){
+  Container(nginx, 'nginx', 'Nginx', 'Direcciona las llamadas a los contenedores correspondientes')
+  Container(hapiFHIR, 'hapi-fhir', 'Java', 'Servidor HAPI FHIR.  Brinda soporte para el almacenamiento de documentos IPS')
+  Container(busGateway, 'bus-gateway', 'NodeJS/Express', 'Orquesta la comunicación con los servicios del Ministerio de Salud de la nación')
+  ContainerDb(hapiDB, 'hapi-db', 'Postgres', 'Almacena datos del servidor HAPI FHIR')
+}
+
+System_Boundary(pins, 'PINS'){
+    Container(federador, 'Federador', 'Java/SpringBoot', 'Brinda la funcionalidad para la federación, busqueda y obtención de pacientes')
+    Container(indiceDocumentos, 'Indice de Documentos', 'Java/SpringBoot', 'Servicio de registro, busqueda  y obtencion de referencias a documentos de salud')
+}
+
+
+
+Rel(historiaClinica, nginx, 'Provee documento IPS')
+Rel(historiaClinica, nginx, 'Consulta el indice de documentos')
+Rel(historiaClinica, nginx, 'Obtiene documentos IPS')
+Rel(historiaClinica, nginx, 'Federa pacientes')
+
+Rel(nginx, busGateway, 'Delega ITI65, ITI67, ITI104 e ITI78')
+Rel(nginx, hapiFHIR, 'Delega ITI68')
+
+Rel(busGateway, hapiFHIR, 'Guarda documento IPS')
+
+Rel(hapiFHIR, hapiDB, 'Persiste datos')
+
+Rel(busGateway, federador, 'Federa, busca y recupera pacientes')
+Rel(busGateway, indiceDocumentos, 'Registra, busca y repuera referencias a documentos')
+
+
+
+@enduml

@@ -1,0 +1,13 @@
+%%{init: {'theme': 'base', 'themeVariables': {'actorBkg': '#1D4ED8', 'actorBorder': '#1E3A8A', 'actorTextColor': '#FFFFFF', 'actorLineColor': '#93C5FD', 'noteBkgColor': '#FEF3C7', 'noteTextColor': '#92400E', 'noteBorderColor': '#F59E0B', 'signalColor': '#1E293B', 'signalTextColor': '#1E293B', 'labelBoxBkgColor': '#7C3AED', 'labelBoxBorderColor': '#5B21B6', 'labelTextColor': '#FFFFFF'}}}%%
+sequenceDiagram
+    autonumber
+    participant HIS_A
+    participant NodoDominio as Nodo
+    box rgb(237,233,254) PINS
+        participant FederadorNacion as Federador
+    end
+    Note over HIS_A,FederadorNacion: Gestion de Identidad
+    HIS_A->>NodoDominio: ITI-78: Busca un paciente en el MPI <br /> [GET /Patient?identifier=<ID_Local>]
+    NodoDominio->>FederadorNacion: Busca un paciente en el Federador <br /> [GET /Patient?identifier=<ID_Local>]
+    FederadorNacion-->>NodoDominio: 200 OK (PatientSearchset)
+    NodoDominio-->>HIS_A: 200 OK (Patient Searchset)

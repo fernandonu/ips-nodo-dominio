@@ -1,0 +1,10 @@
+services:
+  bus-gateway:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      TZ: ${TZ:-America/Argentina/Buenos_Aires}
+    restart: unless-stopped

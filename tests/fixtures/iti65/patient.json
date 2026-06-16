@@ -1,0 +1,43 @@
+{
+  "resourceType": "Patient",
+  "meta": {
+    "profile": [
+      "http://conectataton.msal.gov.ar/StructureDefinition/PacienteAR"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "http://www.renaper.gob.ar/dni",
+      "value": "30945027"
+    },
+    {
+      "system": "https://federador.msal.gob.ar/patient-id",
+      "value": "5037097"
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "family": "García",
+      "given": [
+        "Juan",
+        "Carlos"
+      ]
+    }
+  ],
+  "gender": "male",
+  "birthDate": "1985-03-14",
+  "address": [
+    {
+      "use": "home",
+      "line": [
+        "Av. Corrientes 1234"
+      ],
+      "city": "Ciudad Autónoma de Buenos Aires",
+      "state": "Buenos Aires",
+      "postalCode": "C1043AAZ",
+      "country": "AR"
+    }
+  ]
+}

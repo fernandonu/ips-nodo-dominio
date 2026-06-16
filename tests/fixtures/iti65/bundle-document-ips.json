@@ -1,0 +1,363 @@
+{
+  "resourceType": "Bundle",
+  "meta": {
+    "profile": [
+      "http://conectataton.msal.gov.ar/StructureDefinition/BundleDocAr"
+    ]
+  },
+  "identifier": {
+    "system": "urn:ietf:rfc:3986",
+    "value": "urn:uuid:3a3de9f8-1111-4b6e-8c3f-aabbcc112233"
+  },
+  "type": "document",
+  "timestamp": "2026-04-21T10:00:00-03:00",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:64861145-8711-4410-8c25-74a06e45a627",
+      "resource": {
+        "resourceType": "Composition",
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "60591-5",
+              "display": "Patient summary Document"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:a1df3ba7-ddc1-40c3-823f-46d4a48e2eb8"
+        },
+        "date": "2026-04-21T10:00:00-03:00",
+        "author": [
+          {
+            "reference": "urn:uuid:aec4943e-66f9-4ae4-86b3-870011449959"
+          }
+        ],
+        "title": "Resumen de Salud del Paciente",
+        "section": [
+          {
+            "title": "Medicamentos Activos",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "10160-0",
+                  "display": "History of Medication use Narrative"
+                }
+              ]
+            },
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Enalapril 10mg/día, Metformina 850mg cada 12 hs.</div>"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:d5a3b669-32de-48ca-a146-823a89ef76c1"
+              },
+              {
+                "reference": "urn:uuid:7007b547-b3c8-4624-99ca-b27adc9f935e"
+              }
+            ]
+          },
+          {
+            "title": "Alergias e Intolerancias",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48765-2",
+                  "display": "Allergies and adverse reactions Document"
+                }
+              ]
+            },
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Alergia a Penicilina (urticaria).</div>"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:a590d1b1-5725-477c-9cf8-5b722f17bcae"
+              }
+            ]
+          },
+          {
+            "title": "Problemas de Salud",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "11450-4",
+                  "display": "Problem list - Reported"
+                }
+              ]
+            },
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Hipertensión arterial, Diabetes Mellitus tipo 2.</div>"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:0a904e86-eb41-4516-9bc6-5bd405a64984"
+              },
+              {
+                "reference": "urn:uuid:21fe000b-9388-45b1-9255-a0c0a212ca68"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a1df3ba7-ddc1-40c3-823f-46d4a48e2eb8",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "paciente-001",
+        "meta": {
+          "profile": [
+            "http://conectataton.msal.gov.ar/StructureDefinition/PacienteAR"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "30945027"
+          },
+          {
+            "system": "https://federador.msal.gob.ar/patient-id",
+            "value": "5037097"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": "García",
+            "given": [
+              "Juan",
+              "Carlos"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1985-03-14",
+        "address": [
+          {
+            "use": "home",
+            "line": [
+              "Av. Corrientes 1234"
+            ],
+            "city": "Ciudad Autónoma de Buenos Aires",
+            "state": "Buenos Aires",
+            "postalCode": "C1043AAZ",
+            "country": "AR"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:urn:uuid:aec4943e-66f9-4ae4-86b3-870011449959",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "medico-001",
+        "identifier": [
+          {
+            "system": "http://www.msal.gov.ar/rm",
+            "value": "MP-12345"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Rodríguez",
+            "given": [
+              "María",
+              "Laura"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d5a3b669-32de-48ca-a146-823a89ef76c1",
+      "resource": {
+        "resourceType": "MedicationStatement",
+        "id": "medicacion-001",
+        "status": "active",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.whocc.no/atc",
+              "code": "C09AA02",
+              "display": "Enalapril"
+            }
+          ],
+          "text": "Enalapril 10 mg"
+        },
+        "subject": {
+          "reference": "urn:uuid:a1df3ba7-ddc1-40c3-823f-46d4a48e2eb8"
+        },
+        "dosage": [
+          {
+            "text": "10 mg por día vía oral"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7007b547-b3c8-4624-99ca-b27adc9f935e",
+      "resource": {
+        "resourceType": "MedicationStatement",
+        "id": "medicacion-002",
+        "status": "active",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.whocc.no/atc",
+              "code": "A10BA02",
+              "display": "Metformin"
+            }
+          ],
+          "text": "Metformina 850 mg"
+        },
+        "subject": {
+          "reference": "urn:uuid:a1df3ba7-ddc1-40c3-823f-46d4a48e2eb8"
+        },
+        "dosage": [
+          {
+            "text": "850 mg cada 12 horas vía oral"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a590d1b1-5725-477c-9cf8-5b722f17bcae",
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "alergia-001",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "type": "allergy",
+        "category": [
+          "medication"
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.whocc.no/atc",
+              "code": "J01CA01",
+              "display": "Ampicillin"
+            }
+          ],
+          "text": "Penicilina"
+        },
+        "patient": {
+          "reference": "urn:uuid:a1df3ba7-ddc1-40c3-823f-46d4a48e2eb8"
+        },
+        "reaction": [
+          {
+            "manifestation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "126485001",
+                    "display": "Urticaria"
+                  }
+                ]
+              }
+            ],
+            "severity": "moderate"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0a904e86-eb41-4516-9bc6-5bd405a64984",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "condicion-001",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "38341003",
+              "display": "Hypertensive disorder"
+            }
+          ],
+          "text": "Hipertensión arterial"
+        },
+        "subject": {
+          "reference": "urn:uuid:a1df3ba7-ddc1-40c3-823f-46d4a48e2eb8"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:21fe000b-9388-45b1-9255-a0c0a212ca68",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "condicion-002",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus type 2"
+            }
+          ],
+          "text": "Diabetes Mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:a1df3ba7-ddc1-40c3-823f-46d4a48e2eb8"
+        }
+      }
+    }
+  ]
+}
