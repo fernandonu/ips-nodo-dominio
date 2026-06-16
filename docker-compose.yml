@@ -1,22 +1,5 @@
 services:
-  hapi-fhir:
-    container_name: hapi-fhir
-    image: "hapiproject/hapi:latest"
-    depends_on:
-      hapi-db:
-        condition: service_healthy
-    volumes:
-      - ./hapi-config:/data/hapi
-    environment:
-      TZ: ${TZ:-America/Argentina/Buenos_Aires}
-      SPRING_CONFIG_LOCATION: ${SPRING_CONFIG_LOCATION}
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      SPRING_DATASOURCE_DRIVERCLASSNAME: ${SPRING_DATASOURCE_DRIVERCLASSNAME}
-      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT}
-    networks:
-      - hapi-network
+
   hapi-db:
     container_name: hapi-db
     image: "postgres:14.6"
@@ -38,6 +21,33 @@ services:
       retries: 5
     command: -p 5433
 
+  hapi-fhir:
+    container_name: hapi-fhir
+    image: "hapiproject/hapi:latest"
+    depends_on:
+      hapi-db:
+        condition: service_healthy
+    volumes:
+      - ./hapi-config:/data/hapi
+    environment:
+      TZ: ${TZ:-America/Argentina/Buenos_Aires}
+      SPRING_CONFIG_LOCATION: ${SPRING_CONFIG_LOCATION}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_DRIVERCLASSNAME: ${SPRING_DATASOURCE_DRIVERCLASSNAME}
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT}
+    networks:
+      - hapi-network
+      - dokploy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hapi-fhir.rule=Host(`ipsgarrahan.fgnu.ar`) && PathPrefix(`/fhir`)"
+      - "traefik.http.routers.hapi-fhir.entrypoints=websecure"
+      - "traefik.http.routers.hapi-fhir.priority=1"
+      - "traefik.http.services.hapi-fhir.loadbalancer.server.port=8080"
+      - "traefik.docker.network=dokploy-network"
+
   bus-gateway:
     container_name: bus-gateway
     depends_on:
@@ -47,7 +57,7 @@ services:
       context: ./bus-gateway
     environment:
       TZ: ${TZ:-America/Argentina/Buenos_Aires}
-      NODO_URL_BASE: ${NODO_URL_BASE:-http://localhost}
+      NODO_URL_BASE: ${NODO_URL_BASE:-http://ipsgarrahan.fgnu.ar}
       BUS_URL: ${BUS_URL}
       BUS_JWT_SECRET: ${BUS_JWT_SECRET}
       BUS_ISSUER: ${BUS_ISSUER}
@@ -57,44 +67,24 @@ services:
       DOCUMENT_REGISTRY_SCOPE: ${DOCUMENT_REGISTRY_SCOPE}
       FHIR_URL: http://hapi-fhir:8080/fhir
       BUS_DEBUG: ${BUS_DEBUG}
-    ports:
-      - 9229:9229
     networks:
       - hapi-network
-    command: node --inspect=0.0.0.0:9229 ./bin/www
-
-  nginx:
-    container_name: nginx
-    image: nginx:alpine
-    depends_on:
-      hapi-fhir:
-        condition: service_started
-      bus-gateway:
-        condition: service_started
-    environment:
-      TZ: ${TZ:-America/Argentina/Buenos_Aires}
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      # Selecciona la config con NGINX_CONF=http (default) o NGINX_CONF=https en el .env
-      - ./nginx/${NGINX_CONF:-http}.conf:/etc/nginx/nginx.conf:ro
-    secrets:
-      - ssl_cert
-      - ssl_key
-    networks:
-      - hapi-network
+      - dokploy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bus-gateway.rule=Host(`ipsgarrahan.fgnu.ar`) && (PathPrefix(`/fhir/IPSTransaction`) || PathPrefix(`/fhir/IPSDocument`) || PathPrefix(`/fhir/DocumentReference`) || PathPrefix(`/fhir/Patient`))"
+      - "traefik.http.routers.bus-gateway.entrypoints=websecure"
+      - "traefik.http.routers.bus-gateway.priority=10"
+      - "traefik.http.services.bus-gateway.loadbalancer.server.port=3000"
+      - "traefik.docker.network=dokploy-network"
 
 networks:
   hapi-network:
     name: hapi-network
+  dokploy-network:
+    external: true
 
 volumes:
   hapi-data:
     name: hapi-data
     driver: local
-secrets:
-  ssl_cert:
-    file: ${SSL_CERT_PATH:-./certs/server.crt}
-  ssl_key:
-    file: ${SSL_KEY_PATH:-./certs/server.key}
