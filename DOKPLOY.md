@@ -28,5 +28,5 @@ docker exec bus-gateway env | grep -E "BUS_JWT_SECRET|BUS_ISSUER|BUS_URL|NODO_UR
 Darle permisos: sudo chmod +x /usr/local/bin/update-bus-env.sh
 
 De ahora en adelante el flujo es:
-1 — Editar /etc/dokploy/compose/ips-nodo-dominio-nodo-1uevat/.env con sudo nano
+1 — Editar sudo nano /etc/dokploy/compose/ips-nodo-dominio-nodo-1uevat/.env
 2 — Ejecutar sudo update-bus-env.sh
