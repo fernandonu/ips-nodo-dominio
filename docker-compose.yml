@@ -41,16 +41,18 @@ services:
       - hapi-network
       - dokploy-network
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.hapi-fhir.rule=Host(`ipsgarrahan.fgnu.ar`) && PathPrefix(`/fhir`)"
-      - "traefik.http.routers.hapi-fhir.entrypoints=websecure"
-      - "traefik.http.routers.hapi-fhir.priority=1"
-      - "traefik.http.services.hapi-fhir.loadbalancer.server.port=8080"
-      - "traefik.docker.network=dokploy-network"
-      - "traefik.http.routers.hapi-fhir-root.rule=Host(`ipsgarrahan.fgnu.ar`)"
-      - "traefik.http.routers.hapi-fhir-root.entrypoints=websecure"
-      - "traefik.http.routers.hapi-fhir-root.priority=0"
-      - "traefik.http.services.hapi-fhir-root.loadbalancer.server.port=8080"
+      - traefik.enable=true
+      - traefik.http.routers.hapi-fhir.rule=Host(`ipsgarrahan.fgnu.ar`) && PathPrefix(`/fhir`)
+      - traefik.http.routers.hapi-fhir.entrypoints=websecure
+      - traefik.http.routers.hapi-fhir.priority=1
+      - traefik.http.routers.hapi-fhir.service=hapi-fhir
+      - traefik.http.services.hapi-fhir.loadbalancer.server.port=8080
+      - traefik.docker.network=dokploy-network
+      - traefik.http.routers.hapi-fhir-root.rule=Host(`ipsgarrahan.fgnu.ar`)
+      - traefik.http.routers.hapi-fhir-root.entrypoints=websecure
+      - traefik.http.routers.hapi-fhir-root.priority=0
+      - traefik.http.routers.hapi-fhir-root.service=hapi-fhir-root
+      - traefik.http.services.hapi-fhir-root.loadbalancer.server.port=8080
 
   bus-gateway:
     container_name: bus-gateway
