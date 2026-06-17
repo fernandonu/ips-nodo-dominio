@@ -15,7 +15,7 @@ services:
     networks:
       - hapi-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -p 5433"]
+      test: [ "CMD-SHELL", "pg_isready -p 5433" ]
       interval: 20s
       timeout: 10s
       retries: 5
@@ -47,6 +47,10 @@ services:
       - "traefik.http.routers.hapi-fhir.priority=1"
       - "traefik.http.services.hapi-fhir.loadbalancer.server.port=8080"
       - "traefik.docker.network=dokploy-network"
+      - "traefik.http.routers.hapi-fhir-root.rule=Host(`ipsgarrahan.fgnu.ar`)"
+      - "traefik.http.routers.hapi-fhir-root.entrypoints=websecure"
+      - "traefik.http.routers.hapi-fhir-root.priority=0"
+      - "traefik.http.services.hapi-fhir-root.loadbalancer.server.port=8080"
 
   bus-gateway:
     container_name: bus-gateway
